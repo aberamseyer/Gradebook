@@ -1,5 +1,5 @@
 /**
- * Contains the basic information for an instance of a Student
+ * Contains the basic information for an instance of a Student, constructors + setters + getters for the instance variables
  * 
  * @author Abe Ramseyer
  * 
@@ -41,8 +41,8 @@ public class Student {
 	/**
 	 * @param iD the iD to set
 	 */
-	public void setID(String iD) {
-		ID = iD;
+	public void setID(String ID) {
+		this.ID = ID;
 	}
 
 	/**
