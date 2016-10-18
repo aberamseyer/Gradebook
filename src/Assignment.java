@@ -12,7 +12,43 @@ public class Assignment
 	private int grade;
 	private char letterGrade;
 	private String comment;
+	private String title;
 
+	public Assignment() {
+		this.grade = 0;
+		this.letterGrade = ' ';
+		this.comment = null;
+		this.title = null;
+	}
+	public Assignment(int grade) {
+		this();
+		this.grade = grade;
+	}
+	public Assignment(int grade, char letterGrade) {
+		this(grade);
+		this.letterGrade = letterGrade;
+	}
+	public Assignment(int grade, char letterGrade, String comment) {
+		this(grade, letterGrade);
+		this.comment = comment;
+	}
+	public Assignment(int grade, char letterGrade, String comment, String title) {
+		this(grade, letterGrade, comment);
+		this.title = title;
+	}
+	
+	/**
+	 * @return the title
+	 */
+	public String getTitle() {
+		return title;
+	}
+	/**
+	 * @param title the title to set
+	 */
+	public void setTitle(String title) {
+		this.title = title;
+	}
 	/**
 	 * @return the grade
 	 */
