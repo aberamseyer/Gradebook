@@ -127,15 +127,15 @@ public class GradebookFactory {
 			output.print(ID + ",");
 			for(Semester semester : semesters) {
 				for(Course course : semester.getCourses()) {
-					if(course.getCourseData().get(findStudentByID(ID)) != null) {		// check each and every course for the student object we're looking for
-						for(Assignment assignment : course.getCourseData().get(ID).getAssignments()) {
+					if(course.getCourseData().get(current) != null) {		// check each and every course for the student object we're looking for
+						for(Assignment assignment : course.getCourseData().get(current).getAssignments()) {
 							output.print(course.getCourseID() + "-" + semester.getSeason() + "-" + semester.getYear() + "-" + assignment.getTitle() + ",");
 						}
-						output.print(course.getCourseID() + "-" + semester.getSeason() + "-" + semester.getYear() + "-" + course.getCourseData().get(ID).getLetterGrade());
+						output.print(course.getCourseID() + "-" + semester.getSeason() + "-" + semester.getYear() + "-" + course.getCourseData().get(current).getLetterGrade());
 					}
 				}
 			}
-			System.out.println("Successfully wrote to file " + fileName + ".csv");
+			System.out.println("Successfully wrote to file " + fileName);
 			output.close();
 		} else {
 			System.err.println("Student ID was not found in database.");

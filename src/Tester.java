@@ -23,10 +23,14 @@ public class Tester {
 		courses.add(c1);
 		gb.getSemesters().add(s1);
 		gb.getSemesters().get(0).getCourses().add(c1);
+		
+		
+		gb.getStudents().add(st1);
+		
 		if(true)
 		System.out.println("fun");
 		System.out.println("funfun");
-
+		gb.saveData("aramsey", "abe.csv");
 	}
 
 }
