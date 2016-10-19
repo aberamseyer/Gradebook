@@ -60,7 +60,7 @@ public class GradeBookDriver {
 				System.out
 						.println("Please indicate which file you would like to havee this information exported from.");
 				exportFile = keyboard.nextLine();
-				System.out.println("data fromm student is printed here\n");
+				generateGradeBook.saveData(ID, exportFile);	// will work when merged with abe's code
 //				for(int i=0;i<assignments.length();i++)
 //				{
 //				path through gradeBookFactory to student map is necessary here
@@ -109,31 +109,37 @@ public class GradeBookDriver {
 				// 1. If the course number and semester/year were specified, it
 				// should
 				// contain data only for that course during that semester/year.
+				int[] grades;
 				if (!courseName.equals("none") && !year.equals("none")
-						&& !season.equals("none"))// int[] array of grade composition is needed
+						&& !season.equals("none")) {// int[] array of grade composition is needed
+					grades = generateGradeBook.findGrades(courseName, season.charAt(0), year);	// will work when merged with abe's code
 					System.out.println("For " + courseName + " given in "
 							+ season + " of " + year
-							+ " the grades were composed as follows." + "A's"
-							+ "B's" + "C's" + "D's" + "F's");
-
+							+ " the grades were composed as follows:\n" + grades[0] + " A's, " + grades[1]
+							+ " B's, " + grades[2] +  " C's, " + grades[3] + " D's, " + grades[4] + " F's.");
+				}
 				// 2. If the course number is missing, it should contain data
 				// for all the courses
 				// during that semester/year.
 				else if (courseName.equals("none") && !year.equals("none")
-						&& !season.equals("none"))// int[] array of grade composition is needed
+						&& !season.equals("none")) {// int[] array of grade composition is needed
+					grades = generateGradeBook.findGrades(season.charAt(0), year);	// will work when merged with abe's code
 					System.out.println("Across all courses taken in " + season
 							+ " of " + year
-							+ " the grades were composed as follows." + "A's"
-							+ "B's" + "C's" + "D's" + "F's");
+							+ " the grades were composed as follows:\n" + grades[0] + " A's, "
+							+ grades[1] + " B's, " + grades[2] + " C's, " + grades[3] + " D's, " + grades[4] + " F's.");
+				}
 				// 3. If the semester/year is missing, it should contain data
 				// for the given
 				// course across all semesters.
 
 				else if (!courseName.equals("none") && year.equals("none")
-						&& season.equals("none"))// int[] array of grade composition is needed
+						&& season.equals("none")) {// int[] array of grade composition is needed 
+					grades = generateGradeBook.findGrades(courseName);	// will work when merged with abe's code
 					System.out.println("Across all Semesters the grades for "
-							+ courseName + " were composed as follows." + "A's"
-							+ "B's" + "C's" + "D's" + "F's");
+							+ courseName + " were composed as follows:\n" + grades[0] + " A's, "
+							+ grades[1] + " B's, " + grades[2] + " C's, " + grades[3] + " D's, " + grades[4] + " F's.");
+				}
 				// iii. If both inputs are skipped, the program should return to
 				// the menu without
 				// doing anything.
@@ -145,13 +151,13 @@ public class GradeBookDriver {
 
 			case 'e':
 				System.out.println("you have chosen to exit the gradebook.\n"
-						+ "Thank you for using out gradebook.");
+						+ "Thank you for using our gradebook.");
 				keepGoing = false;
 				keyboard.close();
 				break;
 				
 			default:
-				System.out.println("I'm sorry that was an invalid input please try again");
+				System.out.println("I'm sorry that was an invalid input, please try again");
 
 			}
 
