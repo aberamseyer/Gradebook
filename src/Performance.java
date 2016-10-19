@@ -13,7 +13,7 @@ public class Performance {
 	private char letterGrade;
 	
 	public Performance() {
-		assignments = new ArrayList<Assignment>();
+		assignments = new ArrayList<Assignment>();	// a ArrayList has a default capacity of 16
 		grade = 0;
 		letterGrade = 'F';
 	}
