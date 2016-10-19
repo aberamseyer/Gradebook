@@ -117,6 +117,7 @@ public class GradebookFactory {
 				}
 			}
 			System.out.println("Successfully wrote to file " + fileName + ".csv");
+			output.close();
 		} else {
 			System.err.println("Student ID was not found in database.");
 		}
