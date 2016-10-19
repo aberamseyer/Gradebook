@@ -21,6 +21,25 @@ public class GradebookFactory {
 	private ArrayList<Semester> semesters; 
 	private ArrayList<Student> students;
 
+	public GradebookFactory()
+	{
+		semesters = new ArrayList<Semester>();
+		students = new ArrayList<Student>();
+	}
+
+	/**
+	 * @return the semesters
+	 */
+	public ArrayList<Semester> getSemesters() {
+		return semesters;
+	}
+
+	/**
+	 * @return the students
+	 */
+	public ArrayList<Student> getStudents() {
+		return students;
+	}
 
 	/**
 	 * calculates the number of students who received each letter grade in one specifc course across all semesters
