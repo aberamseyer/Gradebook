@@ -62,5 +62,8 @@ public class Performance {
 	public ArrayList<Assignment> getAssignments() {
 		return assignments;
 	}
+	public void setAssignments(ArrayList<Assignment> assignments) {
+		this.assignments = assignments;
+	}
 	
 }

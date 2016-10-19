@@ -77,11 +77,11 @@ public class Assignment
 	@Override
 	public String toString() {
 		if (!comment.equals(null))
-			return "For this exam the student recieved " + grade + ", for a " + letterGrade
-					+ ". There are no comments available for this exam.";
+			return "For this exam the student recieved " + grade +
+					". There are no comments available for this exam.";
 		else
-			return "For this assignment the student recieved " + grade + ", for a " + letterGrade
-					+ ". comments for this assignment are as follows" + comment + ".";
+			return "For this assignment the student recieved " + grade +
+					". comments for this assignment are as follows" + comment + ".";
 
 	}
 

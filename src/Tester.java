@@ -10,14 +10,15 @@ public class Tester {
 		Semester s1 = new Semester("2002", "Fall");
 		Course c1 = new Course("IT 226");
 		Student st1 = new Student("aramsey", "Abe", "Ramseyer");
-		HashSet<Assignment> ases1 = new HashSet<Assignment>();
-		ases1.add(new Assignment(75, 'C', "you did well", "Assignment 1"));
+		ArrayList<Assignment> ases1 = new ArrayList<Assignment>();
+		ases1.add(new Assignment(75, "you did well", "Assignment 1"));
 		
 		
 		Performance p1 = new Performance(89.4, 'B');
+		
 		HashMap<Student, Performance> m1 = new HashMap<Student, Performance>();
 		m1.put(st1, p1);
-		
+		p1.setAssignments(ases1);
 		ArrayList<Course> courses = new ArrayList<Course>();
 		c1.setCourseData(m1);
 		courses.add(c1);
