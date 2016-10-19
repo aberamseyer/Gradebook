@@ -11,6 +11,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Scanner;
 
 public class GradebookFactory {
@@ -19,13 +20,20 @@ public class GradebookFactory {
 	private ArrayList<Student> students;
 	private ArrayList<Semester> semesters;
 
+	public GradebookFactory() {
+		students = new ArrayList<Student>();
+		semesters = new ArrayList<Semester>();
+	}
+	
 	public void readData(String season, String year, String courseName) {
 		String courseId = courseName.replaceAll("[^\\d]+", "");
 		String[] header;
 		String[] inputData;
-		String[] outputData;
-		Semester semester;
-		boolean existingSemester = false;
+		String[] formattedData;
+		Semester semester = null;
+		Course course = null;
+		int totalNumStudents = students.size();
+		int numStudents = 0;
 		
 		/*
 		 * An array to hold codes for the type of data being read
@@ -40,20 +48,26 @@ public class GradebookFactory {
 		season = season.toLowerCase();
 		
 		//Check if course has already been added
-		if (semesters != null) {
-			for(Semester currS : semesters) {
-				if(currS.getYear().equals(year) && currS.getSeason() == season.charAt(0)) {
-					for(Course currC : currS.getCourses()) {
-						if(currC.getCourseID().equals(courseName)) {
-							System.out.println(courseName + " already exists for the " + season + " " + year + " semester.");
-							return;
-						}
+		for(Semester currS : semesters) {
+			if(currS.getYear().equals(year) && currS.getSeason() == season.charAt(0)) {
+				semester = currS;
+				for(Course currC : currS.getCourses()) {
+					if(currC.getCourseID().equals(courseName)) {
+						System.out.println(courseName + " already exists for the " + season + " " + year + " semester.");
+						return;
 					}
-					existingSemester = true;
-					semester = currS;
 				}
+				break;
 			}
 		}
+		if(semester == null ){
+			semester = new Semester(year, season);
+		}
+
+
+		
+		//Create Course Object
+		course = new Course(courseName);
 		
 		//Open File
 		try {
@@ -64,18 +78,26 @@ public class GradebookFactory {
 			return;
 		}
 		
+		//Get Header
 		inputData = input.nextLine().split(",");
-		header = readLine(inputData);
-		for(int i = 0; i < header.length; i++) {
-			System.out.println(header[i]);
-		}
-		
+		header = formatData(inputData);
+
+		//Determine file structure from header
 		readOrder = createReadOrder(header);
 		
-		for(int i = 0; i < readOrder.length - 1; i++) {
-			System.out.print(readOrder[i] + ", ");
+		//Interpret Data
+		while(input.hasNextLine()) {
+			inputData = input.nextLine().split(",");
+			formattedData = formatData(inputData);
+			interpretData(formattedData, header, course.getCourseData(), readOrder);
+			numStudents++;
 		}
-		System.out.println(readOrder[readOrder.length - 1]);
+		
+		//Add Course to semester
+		semester.getCourses().add(course);
+		System.out.println("Added " + courseName + " of the " + season + " " + year + "semester to the repository.\n" +
+		numStudents + " students were enrolled, of which, " + (students.size() - totalNumStudents) +
+		" were already in the repository.");
 	}
 
 	private int[] createReadOrder(String[] header) {
@@ -119,7 +141,7 @@ public class GradebookFactory {
 	 * @param inputData And array resulting from splitting a csv file
 	 * @return An array that contains any commas 
 	 */
-	private String[] readLine(String[] inputData) {
+	private String[] formatData(String[] inputData) {
 		ArrayList<String> outputData = new ArrayList<String>();
 
 		for(int i = 0; i < inputData.length; i++) {
@@ -146,6 +168,65 @@ public class GradebookFactory {
 			}
 		}
 		return outputData.toArray(new String[outputData.size()]);
+	}
+	
+	private void interpretData(String[] data, String[] header, HashMap<Student, Performance> courseData, int[] readOrder) {
+		String[] fullName;
+		Student student = new Student();
+		Performance performance = new Performance();
+		Assignment assignment;
+		int grade;
+		String comment;
+		String title;
+		for(int i = 0; i < data.length; i++) {
+			switch (readOrder[i]) {
+			//ID
+			case 0:	student.setID(data[i]);
+					break;
+			//First Name
+			case 1:	student.setFirstName(data[i]);
+					break;
+			//Last Name
+			case 2: student.setLastName(data[i]);
+					break;
+			//Full Name
+			case 3: fullName = data[i].split(",");
+					student.setLastName(fullName[0]);
+					student.setLastName(fullName[1]);
+					break;
+			//Assignment
+			case 4:	title = header[i];
+					grade = Integer.parseInt(data[i]);
+					if(readOrder[i+1] == 5) {
+						comment = data[i+1];
+						assignment = new Assignment(title, grade, comment);
+						i++;
+					}
+					else {
+						assignment = new Assignment(title, grade);
+					}
+					performance.getAssignments().add(assignment);
+					break;
+			//Case 4 renders a Case 5 unreachable
+			//Total Grade
+			case 6:	performance.setGrade(Double.parseDouble(data[i]));
+					break;
+			//Letter Grade
+			case 7:	performance.setLetterGrade(data[i].charAt(0));
+					break;
+			//This should be unreachable as well
+			default:
+					System.out.println("Invalid Data Type");
+					break;
+			}
+		}
+		//Add student data to course
+		courseData.put(student, performance);
+		
+		//If student is not in repository add to list
+		if(!students.contains(student)) {
+			students.add(student);
+		}
 	}
 
 }

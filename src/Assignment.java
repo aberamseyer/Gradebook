@@ -10,31 +10,25 @@ public class Assignment
 {
 
 	private int grade;
-	private char letterGrade;
 	private String comment;
 	private String title;
 
 	public Assignment() {
 		this.grade = 0;
-		this.letterGrade = ' ';
 		this.comment = null;
 		this.title = null;
 	}
-	public Assignment(int grade) {
+	public Assignment(String title) {
 		this();
-		this.grade = grade;
-	}
-	public Assignment(int grade, char letterGrade) {
-		this(grade);
-		this.letterGrade = letterGrade;
-	}
-	public Assignment(int grade, char letterGrade, String comment) {
-		this(grade, letterGrade);
-		this.comment = comment;
-	}
-	public Assignment(int grade, char letterGrade, String comment, String title) {
-		this(grade, letterGrade, comment);
 		this.title = title;
+	}
+	public Assignment(String title, int grade) {
+		this(title);
+		this.title = title;
+	}
+	public Assignment(String title, int grade, String comment) {
+		this(title, grade);
+		this.comment = comment;
 	}
 	
 	/**
@@ -64,20 +58,6 @@ public class Assignment
 	}
 
 	/**
-	 * @return the letterGrade
-	 */
-	public char getLetterGrade() {
-		return letterGrade;
-	}
-
-	/**
-	 * @param letterGrade the letterGrade to set
-	 */
-	public void setLetterGrade(char letterGrade) {
-		this.letterGrade = letterGrade;
-	}
-
-	/**
 	 * @return the comment
 	 */
 	public String getComment() {
@@ -97,10 +77,10 @@ public class Assignment
 	@Override
 	public String toString() {
 		if (!comment.equals(null))
-			return "For this exam the student recieved " + grade + ", for a " + letterGrade
+			return "For this exam the student recieved " + grade + "%"
 					+ ". There are no comments available for this exam.";
 		else
-			return "For this assignment the student recieved " + grade + ", for a " + letterGrade
+			return "For this assignment the student recieved " + grade + "%"
 					+ ". comments for this assignment are as follows" + comment + ".";
 
 	}
