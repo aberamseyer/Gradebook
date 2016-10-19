@@ -122,16 +122,16 @@ public class GradebookFactory {
 		} catch (FileNotFoundException e) {
 			System.err.println("Unable to create file with specified name.");
 		}
-		Student current = findStudentByID(ID);
-		if(output != null && current != null) {
+		Student currentStudent = findStudentByID(ID);
+		if(output != null && currentStudent != null) {
 			output.print(ID + ",");
 			for(Semester semester : semesters) {
 				for(Course course : semester.getCourses()) {
-					if(course.getCourseData().get(current) != null) {		// check each and every course for the student object we're looking for
-						for(Assignment assignment : course.getCourseData().get(current).getAssignments()) {
+					if(course.getCourseData().get(currentStudent) != null) {		// check each and every course for the student object we're looking for
+						for(Assignment assignment : course.getCourseData().get(currentStudent).getAssignments()) {
 							output.print(course.getCourseID() + "-" + semester.getSeason() + "-" + semester.getYear() + "-" + assignment.getTitle() + ",");
 						}
-						output.print(course.getCourseID() + "-" + semester.getSeason() + "-" + semester.getYear() + "-" + course.getCourseData().get(current).getLetterGrade());
+						output.print(course.getCourseID() + "-" + semester.getSeason() + "-" + semester.getYear() + "-" + course.getCourseData().get(currentStudent).getLetterGrade());
 					}
 				}
 			}

@@ -11,7 +11,7 @@ public class Tester {
 		Course c1 = new Course("IT 226");
 		Student st1 = new Student("aramsey", "Abe", "Ramseyer");
 		HashSet<Assignment> ases1 = new HashSet<Assignment>();
-		ases1.add(new Assignment(75, 'C', "you did well"));
+		ases1.add(new Assignment(75, 'C', "you did well", "Assignment 1"));
 		
 		
 		Performance p1 = new Performance(89.4, 'B');
