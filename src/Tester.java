@@ -32,6 +32,21 @@ public class Tester {
 		System.out.println("fun");
 		System.out.println("funfun");
 		gb.saveData("aramsey", "abe.csv");
+		System.out.println("----------------by course number----------");
+		int[] grades = gb.findGrade("IT 226");
+		for(int i = 0; i < grades.length; i++) {
+			System.out.println(grades[i]);
+		}
+		System.out.println("----------by semester season/year----------");
+		grades = gb.findGrade('F', "2002");
+		for(int i = 0; i < grades.length; i++) {
+			System.out.println(grades[i]);
+		}
+		System.out.println("-------------by all three----------------------");
+		grades = gb.findGrade("IT 226", 'F', "2002");
+		for(int i = 0; i < grades.length; i++) {
+			System.out.println(grades[i]);
+		}
 	}
 
 }
