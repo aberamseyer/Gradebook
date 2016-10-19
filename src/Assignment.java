@@ -10,13 +10,11 @@ public class Assignment
 {
 
 	private int grade;
-	private char letterGrade;
 	private String comment;
 	private String title;
 
 	public Assignment() {
 		this.grade = 0;
-		this.letterGrade = ' ';
 		this.comment = null;
 		this.title = null;
 	}
@@ -24,16 +22,12 @@ public class Assignment
 		this();
 		this.grade = grade;
 	}
-	public Assignment(int grade, char letterGrade) {
+	public Assignment(int grade, String comment) {
 		this(grade);
-		this.letterGrade = letterGrade;
-	}
-	public Assignment(int grade, char letterGrade, String comment) {
-		this(grade, letterGrade);
 		this.comment = comment;
 	}
-	public Assignment(int grade, char letterGrade, String comment, String title) {
-		this(grade, letterGrade, comment);
+	public Assignment(int grade, String comment, String title) {
+		this(grade, comment);
 		this.title = title;
 	}
 	
@@ -61,20 +55,6 @@ public class Assignment
 	 */
 	public void setGrade(int grade) {
 		this.grade = grade;
-	}
-
-	/**
-	 * @return the letterGrade
-	 */
-	public char getLetterGrade() {
-		return letterGrade;
-	}
-
-	/**
-	 * @param letterGrade the letterGrade to set
-	 */
-	public void setLetterGrade(char letterGrade) {
-		this.letterGrade = letterGrade;
 	}
 
 	/**
