@@ -24,7 +24,7 @@ public class Assignment
 	}
 	public Assignment(String title, int grade) {
 		this(title);
-		this.title = title;
+		this.grade = grade;
 	}
 	public Assignment(String title, int grade, String comment) {
 		this(title, grade);

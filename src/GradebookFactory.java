@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
 
+
 public class GradebookFactory {
 	private Scanner input;
 	private PrintWriter output;
@@ -24,17 +25,19 @@ public class GradebookFactory {
 		students = new ArrayList<Student>();
 		semesters = new ArrayList<Semester>();
 	}
-	
+
 	public void readData(String season, String year, String courseName) {
 		String courseId = courseName.replaceAll("[^\\d]+", "");
 		String[] header;
-		String[] inputData;
+		String inputData;
 		String[] formattedData;
 		Semester semester = null;
 		Course course = null;
-		int totalNumStudents = students.size();
 		int numStudents = 0;
-		
+		int totalNumStudents = students.size();
+		boolean newSemester = false;
+		boolean firstEntry = false;
+
 		/*
 		 * An array to hold codes for the type of data being read
 		 * Size and contents will be determined by reading the header file
@@ -44,16 +47,17 @@ public class GradebookFactory {
 		 * 6 = Total Grade, 7 = Letter Grade
 		 */
 		int[] readOrder;	
-		
-		season = season.toLowerCase();
-		
+
+		season = season.toUpperCase();
+
 		//Check if course has already been added
 		for(Semester currS : semesters) {
 			if(currS.getYear().equals(year) && currS.getSeason() == season.charAt(0)) {
 				semester = currS;
 				for(Course currC : currS.getCourses()) {
 					if(currC.getCourseID().equals(courseName)) {
-						System.out.println(courseName + " already exists for the " + season + " " + year + " semester.");
+						System.out.println(courseName + " already exists for the " + season.charAt(0) +
+								season.substring(1).toLowerCase() + " " + year + " semester.");
 						return;
 					}
 				}
@@ -62,42 +66,62 @@ public class GradebookFactory {
 		}
 		if(semester == null ){
 			semester = new Semester(year, season);
+			newSemester = true;
 		}
 
-
+		//Check if this is the first addition to the repository
+		if(students.isEmpty()) {
+			firstEntry = true;
+		}
+		
 		
 		//Create Course Object
 		course = new Course(courseName);
-		
+
+
+		System.out.println("Read of file: " + courseId + "-" + season.toLowerCase() + "-" + year + ".csv\n"); //Debug
+
 		//Open File
 		try {
-			input = new Scanner(new File(courseId + "-" + season + "-" + year + ".csv"));
+			input = new Scanner(new File(courseId + "-" + season.toLowerCase() + "-" + year + ".csv"));
 		}
 		catch(FileNotFoundException e) {
 			System.out.println("No data found for " + courseName + " " + season + " " + year + ".");
 			return;
 		}
-		
+
 		//Get Header
-		inputData = input.nextLine().split(",");
+		inputData = input.nextLine();
 		header = formatData(inputData);
 
 		//Determine file structure from header
 		readOrder = createReadOrder(header);
-		
+
 		//Interpret Data
 		while(input.hasNextLine()) {
-			inputData = input.nextLine().split(",");
+			inputData = input.nextLine();
 			formattedData = formatData(inputData);
 			interpretData(formattedData, header, course.getCourseData(), readOrder);
 			numStudents++;
 		}
-		
-		//Add Course to semester
+
+		input.close();
+
+		//Add Course to semester and add semester to list of courses
 		semester.getCourses().add(course);
-		System.out.println("Added " + courseName + " of the " + season + " " + year + "semester to the repository.\n" +
-		numStudents + " students were enrolled, of which, " + (students.size() - totalNumStudents) +
-		" were already in the repository.");
+		if(newSemester) {
+			semesters.add(semester);
+		}
+		//If first entry, avoid showing erroneous number added
+		if(firstEntry) {
+			totalNumStudents = students.size();
+		}
+		else {
+			totalNumStudents += numStudents;
+		}
+		System.out.println("Added " + courseName + " of the " + season + " " + year + " semester to the repository.\n" +
+				numStudents + " students were enrolled, of which, " + (totalNumStudents - students.size()) +
+				" were already in the repository.\n");
 	}
 
 	private int[] createReadOrder(String[] header) {
@@ -134,42 +158,41 @@ public class GradebookFactory {
 		return readOrder;
 	}
 
-	/**
-	 * Reads an array that has been created by splitting 
-	 * a line of a .csv file by commas and merges and replaces any
-	 * elements where commas that were marked to be kept
-	 * @param inputData And array resulting from splitting a csv file
-	 * @return An array that contains any commas 
+	/*
+	 * Reads a line of a .csv file and puts each element into an array
 	 */
-	private String[] formatData(String[] inputData) {
-		ArrayList<String> outputData = new ArrayList<String>();
+	private String[] formatData(String inputData) {
+		ArrayList<String> data = new ArrayList<String>();
+		int index = 0;
 
-		for(int i = 0; i < inputData.length; i++) {
-			//Check to see if this element is part of one that contained commas
-			if(inputData[i].charAt(0) == '\"') {
-				//Remove quotation mark from beginning
-				inputData[i] = inputData[i].substring(1);
-				for(int j = i+1; j < inputData.length; j++) {
-					//Add comma back and combine with next element
-					inputData[i] += "," + inputData[j];
-					//Check if this element is now complete
-					if(inputData[j].charAt(inputData[j].length() - 1) == '\"') {
-						//Add completed element to output array
-						outputData.add(inputData[i].substring(0, inputData[i].length() - 2));
-						//Move i to end of complete element and end for loop
-						i = j;
-						j = inputData.length;
+		while(!inputData.equals("")) {
+			if(inputData.charAt(0) == '\"') {
+				index = inputData.indexOf("\",", index);
+				if(inputData.substring(index - 1,index + 2).equals("\"\",") && !inputData.substring(index - 2,index + 2).equals("\"\"\",")) {
+					index++;
+				}
+				else {
+					data.add(inputData.substring(1, index).replaceAll("[\"+\"]+", "\""));
+					if(inputData.contains(",")) {
+						inputData = inputData.substring(index + 2);
 					}
 				}
 			}
-			//Add element to output array
 			else {
-				outputData.add(inputData[i]);
+				if(!inputData.contains(",")) {
+					data.add(inputData.replaceAll("[\"+\"]+", "\""));
+					inputData = "";
+				}
+				else {
+					index = inputData.indexOf(",");
+					data.add(inputData.substring(0, index).replaceAll("[\"+\"]+", "\""));
+					inputData = inputData.substring(index + 1);
+				}
 			}
 		}
-		return outputData.toArray(new String[outputData.size()]);
+		return data.toArray(new String[data.size()]);
 	}
-	
+
 	private void interpretData(String[] data, String[] header, HashMap<Student, Performance> courseData, int[] readOrder) {
 		String[] fullName;
 		Student student = new Student();
@@ -178,55 +201,61 @@ public class GradebookFactory {
 		int grade;
 		String comment;
 		String title;
-		for(int i = 0; i < data.length; i++) {
+		boolean existingStudent = false;
+
+		for(int i = 0; i < data.length; i++) {	
 			switch (readOrder[i]) {
 			//ID
 			case 0:	student.setID(data[i]);
-					break;
+			break;
 			//First Name
 			case 1:	student.setFirstName(data[i]);
-					break;
+			break;
 			//Last Name
 			case 2: student.setLastName(data[i]);
-					break;
+			break;
 			//Full Name
-			case 3: fullName = data[i].split(",");
-					student.setLastName(fullName[0]);
-					student.setLastName(fullName[1]);
-					break;
+			case 3: fullName = data[i].split(", ");
+			student.setLastName(fullName[0]);
+			student.setFirstName(fullName[1]);
+			break;
 			//Assignment
 			case 4:	title = header[i];
-					grade = Integer.parseInt(data[i]);
-					if(readOrder[i+1] == 5) {
-						comment = data[i+1];
-						assignment = new Assignment(title, grade, comment);
-						i++;
-					}
-					else {
-						assignment = new Assignment(title, grade);
-					}
-					performance.getAssignments().add(assignment);
-					break;
+			grade = Integer.parseInt(data[i]);
+			if(readOrder[i+1] == 5) {
+				comment = data[i+1];
+				assignment = new Assignment(title, grade, comment);
+				i++;
+			}
+			else {
+				assignment = new Assignment(title, grade);
+			}
+			performance.getAssignments().add(assignment);
+			break;
 			//Case 4 renders a Case 5 unreachable
 			//Total Grade
 			case 6:	performance.setGrade(Double.parseDouble(data[i]));
-					break;
+			break;
 			//Letter Grade
 			case 7:	performance.setLetterGrade(data[i].charAt(0));
-					break;
+			break;
 			//This should be unreachable as well
 			default:
-					System.out.println("Invalid Data Type");
-					break;
+				System.out.println("Invalid Data Type");
+				break;
 			}
 		}
 		//Add student data to course
 		courseData.put(student, performance);
-		
+
 		//If student is not in repository add to list
-		if(!students.contains(student)) {
+		for(Student curr : students) {
+			if(curr.getID().equals(student.getID())) {
+				existingStudent = true;
+			}
+		}
+		if(existingStudent == false) {
 			students.add(student);
 		}
 	}
-
 }

@@ -5,17 +5,17 @@
  * @author Abe Ramseyer
  *
  */
-import java.util.HashSet;
+import java.util.ArrayList;
 
 public class Performance {
-	private HashSet<Assignment> assignments;
+	private ArrayList<Assignment> assignments;
 	private double grade;
 	private char letterGrade;
 	
 	public Performance() {
-		assignments = new HashSet<Assignment>();	// a HashSet has a default capacity of 16
+		assignments = new ArrayList<Assignment>();
 		grade = 0;
-		letterGrade = 0;
+		letterGrade = 'F';
 	}
 	
 	public Performance(double grade) {
@@ -59,7 +59,7 @@ public class Performance {
 	/**
 	 * @return the assignments
 	 */
-	public HashSet<Assignment> getAssignments() {
+	public ArrayList<Assignment> getAssignments() {
 		return assignments;
 	}
 	
