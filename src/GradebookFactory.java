@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
 
-
 public class GradebookFactory {
 	private Scanner input;
 	private PrintWriter output;
@@ -26,6 +25,12 @@ public class GradebookFactory {
 		semesters = new ArrayList<Semester>();
 	}
 
+	/**
+	 * Reads a csv file from the project directory and stores its data
+	 * @param season The semester of the class. Either Spring or Fall
+	 * @param year The year the class is/was in
+	 * @param courseName The name of the course
+	 */
 	public void readData(String season, String year, String courseName) {
 		String courseId = courseName.replaceAll("[^\\d]+", "");
 		String[] header;
@@ -50,7 +55,7 @@ public class GradebookFactory {
 
 		season = season.toUpperCase();
 
-		//Check if course has already been added
+		//Check if the semester already exists and if the course is a duplicate
 		for(Semester currS : semesters) {
 			if(currS.getYear().equals(year) && currS.getSeason() == season.charAt(0)) {
 				semester = currS;
@@ -74,12 +79,8 @@ public class GradebookFactory {
 			firstEntry = true;
 		}
 		
-		
 		//Create Course Object
 		course = new Course(courseName);
-
-
-		System.out.println("Read of file: " + courseId + "-" + season.toLowerCase() + "-" + year + ".csv\n"); //Debug
 
 		//Open File
 		try {
@@ -105,6 +106,7 @@ public class GradebookFactory {
 			numStudents++;
 		}
 
+		//Close file
 		input.close();
 
 		//Add Course to semester and add semester to list of courses
@@ -124,6 +126,10 @@ public class GradebookFactory {
 				" were already in the repository.\n");
 	}
 
+	/*
+	 * Creates an array of ints that represents the structure of the
+	 * file being read
+	 */
 	private int[] createReadOrder(String[] header) {
 		//A string to hold the column header in lowercase
 		String curr;
@@ -193,6 +199,10 @@ public class GradebookFactory {
 		return data.toArray(new String[data.size()]);
 	}
 
+	/*
+	 * Interprets a live of a csv file using the readOrder array,
+	 * creates objects, and passes them to their appropriate locations
+	 */
 	private void interpretData(String[] data, String[] header, HashMap<Student, Performance> courseData, int[] readOrder) {
 		String[] fullName;
 		Student student = new Student();
