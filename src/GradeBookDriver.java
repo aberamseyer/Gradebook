@@ -14,38 +14,35 @@ public class GradeBookDriver {
 		boolean keepGoing = true;
 		Scanner keyboard = new Scanner(System.in);
 
-		System.out.println("Welcome to our Grade book simulator.");
+		System.out.println("Welcome to our Grade book simulator.\n");
 		while (keepGoing) {
 			System.out
-					.println("Please insert a character to select an option.\n"
+					.println("Please insert a character to select an option.\n\n"
 							+ "to Add data type ‘a’ or ‘A’.\n"
 							+ "to Save data for a student type ‘s’ or ‘S’\n"
 							+ "to Return number of students who got a specific grade in a specific course in a specific\n"
 							+ "semester type ‘g’ or ‘G’\n"
-							+ "to Exit the program type ‘e’ or ‘E\n");
-
-			switch (keyboard.next().toLowerCase().charAt(0)) {
+							+ "to Exit the program type ‘e’ or ‘E");
+			char choice = keyboard.next().toLowerCase().charAt(0); 
+			keyboard.nextLine();
+			switch (choice) {
 			case 'a':
 				String season,
 				year,
 				courseName;
 				System.out
-						.println("You have chosen to add data to our repository.\n+"
-								+ "Please indicate the semester you would like read.");
+						.println("You have chosen to add data to our repository.\n"
+								+ "Please indicate the semester (Fall or Spring) you would like read.");
 				season = keyboard.nextLine();
 				System.out
 						.println("Please indicate the year the course was taken.");
 				year = keyboard.nextLine();
 				System.out
 						.println("Please indicate the courses Department and course number seperated with a space."
-								+ "Ex:\"IT 226\"\n");
+								+ "Ex:\"IT 226\"");
 				courseName = keyboard.nextLine();
 
 				generateGradeBook.readData(season, year, courseName);
-				// **need a way to access & print the number of students whose
-				// data it just read, and how many students
-				// already existed in the repository.
-
 				// 4 v. Print the number of students whose data it just read,
 				// and how many students
 				// already existed in the repository.
@@ -58,35 +55,9 @@ public class GradeBookDriver {
 								+ "Please give the students ID.");
 				ID = keyboard.nextLine();
 				System.out
-						.println("Please indicate which file you would like to havee this information exported from.");
+						.println("Please indicate which file you would like to have this information exported from.");
 				exportFile = keyboard.nextLine();
 				generateGradeBook.saveData(ID, exportFile);	// will work when merged with abe's code
-//				for(int i=0;i<assignments.length();i++)
-//				{
-//				path through gradeBookFactory to student map is necessary here
-				
-				// iii. Find all data from the repository pertaining to this
-				// student, and export it in csv
-				// format as follows:]
-
-				// 1. Column headings: “Student Id”, <Course>-<Semester>-<Year>-
-				// <Assignment name>,…repeated for each instance found for this
-				// student.
-				// For example, if data was found for this student in two
-				// courses: IT 226 in Fall
-				// 2002 (which has 5 assignments and a letter grade) and IT 279
-				// in Spring 2003
-				// (which has 3 assignments and a letter grade), then the
-				// columns would be:
-				// Student Id,IT226-F-2002-Assignment 1, IT226-F-2002-Assignment
-				// 2, IT226-
-				// F-2002-Assignment 3, IT226-F-2002-Assignment 4, IT226-F-2002-
-				// Assignment 5, IT226-F-2002-Letter grade
-				// IT279-S-2003-Assignment 1,
-				// IT279-S-2003-Assignment 2, IT279-S-2003-Assignment 3,
-				// IT279-S-2003-
-				// Letter grade
-//				}
 				break;
 
 			case 'g':
@@ -111,8 +82,8 @@ public class GradeBookDriver {
 				// contain data only for that course during that semester/year.
 				int[] grades;
 				if (!courseName.equals("none") && !year.equals("none")
-						&& !season.equals("none")) {// int[] array of grade composition is needed
-					grades = generateGradeBook.findGrade(courseName, season.charAt(0), year);	// will work when merged with abe's code
+						&& !season.equals("none")) {
+					grades = generateGradeBook.findGrade(courseName, season.charAt(0), year);
 					System.out.println("For " + courseName + " given in "
 							+ season + " of " + year
 							+ " the grades were composed as follows:\n" + grades[0] + " A's, " + grades[1]
@@ -122,8 +93,8 @@ public class GradeBookDriver {
 				// for all the courses
 				// during that semester/year.
 				else if (courseName.equals("none") && !year.equals("none")
-						&& !season.equals("none")) {// int[] array of grade composition is needed
-					grades = generateGradeBook.findGrade(season.charAt(0), year);	// will work when merged with abe's code
+						&& !season.equals("none")) {
+					grades = generateGradeBook.findGrade(season.charAt(0), year);
 					System.out.println("Across all courses taken in " + season
 							+ " of " + year
 							+ " the grades were composed as follows:\n" + grades[0] + " A's, "
@@ -134,8 +105,8 @@ public class GradeBookDriver {
 				// course across all semesters.
 
 				else if (!courseName.equals("none") && year.equals("none")
-						&& season.equals("none")) {// int[] array of grade composition is needed 
-					grades = generateGradeBook.findGrade(courseName);	// will work when merged with abe's code
+						&& season.equals("none")) {
+					grades = generateGradeBook.findGrade(courseName);
 					System.out.println("Across all Semesters the grades for "
 							+ courseName + " were composed as follows:\n" + grades[0] + " A's, "
 							+ grades[1] + " B's, " + grades[2] + " C's, " + grades[3] + " D's, " + grades[4] + " F's.");
@@ -145,7 +116,7 @@ public class GradeBookDriver {
 				// doing anything.
 				else
 					System.out
-							.println("not enough information or invalid information was given."
+							.println("not enough information or invalid information was given. "
 									+ "Returning to menu");
 				break;
 

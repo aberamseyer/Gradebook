@@ -42,7 +42,7 @@ public class GradebookFactory {
 	}
 
 	/**
-	 * calculates the number of students who received each letter grade in one specifc course across all semesters
+	 * calculates the number of students who received each letter grade in one specific course across all semesters
 	 * 
 	 * @param courseNumber the course identifier
 	 * @return an int[5] containing the number of A's, B's, C's, D's, and F's
@@ -63,7 +63,7 @@ public class GradebookFactory {
 	}
 
 	/**
-	 * calculates the number of students who received each letter grade in a specifc semester and year
+	 * calculates the number of students who received each letter grade in a specific semester and year
 	 * 
 	 * @param season the season (Fall or Spring)
 	 * @param year the year (XXXX format)
@@ -127,7 +127,7 @@ public class GradebookFactory {
 			output.print(ID + ",");
 			for(Semester semester : semesters) {
 				for(Course course : semester.getCourses()) {
-					if(course.getCourseData().get(currentStudent) != null) {		// check each and every course for the student object we're looking for
+					if(course.getCourseData().keySet().) {		// check each and every course for the student object we're looking for
 						for(Assignment assignment : course.getCourseData().get(currentStudent).getAssignments()) {
 							output.print(course.getCourseID() + "-" + semester.getSeason() + "-" + semester.getYear() + "-" + assignment.getTitle() + ",");
 						}
@@ -139,6 +139,7 @@ public class GradebookFactory {
 			output.close();
 		} else {
 			System.err.println("Student ID was not found in database.");
+			output.close();
 		}
 	}
 	
