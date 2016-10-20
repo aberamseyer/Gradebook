@@ -56,6 +56,9 @@ public class GradebookFactory {
 				}
 			}
 		}
+		if(Arrays.equals(grades, new int[]{0, 0, 0, 0, 0})) {
+			System.out.println("\nCourse was not found in the database.");
+		}
 		return grades;
 	}
 
@@ -71,12 +74,12 @@ public class GradebookFactory {
 		for(Semester semester : semesters) {
 			if(semester.getYear().equals(year) && semester.getSeason() == season) {
 				for(Course course : semester.getCourses()) {
-						grades = iterateThroughCourseMap(course, grades);
+					grades = iterateThroughCourseMap(course, grades);
 				}
 			}
 		}
 		if(Arrays.equals(grades, new int[]{0, 0, 0, 0, 0})) {
-			System.out.println("Semester was not found in the database.");
+			System.out.println("\nSemester was not found in the database.");
 		}
 		return grades;
 	}
@@ -100,11 +103,10 @@ public class GradebookFactory {
 			}
 		}
 		if(Arrays.equals(grades, new int[]{0, 0, 0, 0, 0})) {
-			System.err.println("Semester/Course combination was not found in the database.");
+			System.out.println("\nSemester/Course combination was not found in the database.");
 		}
 		return grades;
 	}
-
 
 	/**
 	 * Exports data for a specific student to a .csv file that shows all the data relevant to
@@ -114,32 +116,36 @@ public class GradebookFactory {
 	 * @param fileName the name of the file to export the data to
 	 */
 	public void saveData(String ID, String fileName) {
+		String outputText = "";
+		
 		try {
 			output = new PrintWriter(new File(fileName));
 		} catch (FileNotFoundException e) {
-			System.err.println("Unable to create file with specified name.");
+			System.out.println("Unable to create file with specified name.");
 		}
 		Student currentStudent = findStudentByID(ID);
 		if(output != null && currentStudent != null) {
-			output.print(ID + ",");
+			outputText += (ID + ",");
 			for(Semester semester : semesters) {
 				for(Course course : semester.getCourses()) {
 					if(course.getCourseData().containsKey(currentStudent)) {		// check each and every course for the student object we're looking for
 						for(Assignment assignment : course.getCourseData().get(currentStudent).getAssignments()) {
-							output.print(course.getCourseID() + "-" + semester.getSeason() + "-" + semester.getYear() + "-" + assignment.getTitle() + ",");
+							outputText += (course.getCourseID() + "-" + semester.getSeason() + "-" + semester.getYear() + "-" + assignment.getTitle() + ",");
 						}
-						output.print(course.getCourseID() + "-" + semester.getSeason() + "-" + semester.getYear() + "-" + course.getCourseData().get(currentStudent).getLetterGrade() + ",");
+						outputText += (course.getCourseID() + "-" + semester.getSeason() + "-" + semester.getYear() + "-" + course.getCourseData().get(currentStudent).getLetterGrade() + ",");
 					}
 				}
 			}
-			System.out.println("Successfully wrote to file " + fileName);
+			output.print(outputText.substring(0, outputText.length() - 1));
+			System.out.println("\nSuccessfully wrote to file " + fileName + "\n");
 			output.close();
-		} else {
-			System.err.println("Student ID was not found in database.");
+		}
+		else {
+			System.out.println("\nStudent ID was not found in database.\n");
 			output.close();
 		}
 	}
-	
+
 	/*
 	 * makes a specified course's hashmaps iterable and finds the amount of A-Fs in them
 	 */
@@ -167,7 +173,7 @@ public class GradebookFactory {
 		}
 		return grades;
 	}
-	
+
 	/*
 	 * returns the student object that an ID belongs to
 	 */
@@ -216,8 +222,8 @@ public class GradebookFactory {
 				semester = currS;
 				for(Course currC : currS.getCourses()) {
 					if(currC.getCourseID().equals(courseName)) {
-						System.out.println(courseName + " already exists for the " + season.charAt(0) +
-								season.substring(1).toLowerCase() + " " + year + " semester.");
+						System.out.println("\n" + courseName + " already exists for the " + season.charAt(0) +
+								season.substring(1).toLowerCase() + " " + year + " semester.\n");
 						return;
 					}
 				}
@@ -233,7 +239,7 @@ public class GradebookFactory {
 		if(students.isEmpty()) {
 			firstEntry = true;
 		}
-		
+
 		//Create Course Object
 		course = new Course(courseName);
 
@@ -242,8 +248,8 @@ public class GradebookFactory {
 			input = new Scanner(new File(courseId + "-" + season.toLowerCase() + "-" + year + ".csv"));
 		}
 		catch(FileNotFoundException e) {
-			System.out.println("No data found for " + courseName + " " + season.charAt(0) + season.toLowerCase().substring(1)
-					+ " " + year + ".");
+			System.out.println("\nNo data found for " + courseName + " " + season.charAt(0) + season.toLowerCase().substring(1)
+					+ " " + year + ".\n");
 			return;
 		}
 
@@ -277,7 +283,7 @@ public class GradebookFactory {
 		else {
 			totalNumStudents += numStudents;
 		}
-		System.out.println("Added " + courseName + " of the " + season.charAt(0) + season.toLowerCase().substring(1) +
+		System.out.println("\nAdded " + courseName + " of the " + season.charAt(0) + season.toLowerCase().substring(1) +
 				" " + year + " semester to the repository.\n" +
 				numStudents + " students were enrolled, of which, " + (totalNumStudents - students.size()) +
 				" were already in the repository.\n");
@@ -425,8 +431,5 @@ public class GradebookFactory {
 		}
 		//Add student to course
 		courseData.put(student, performance);
-
-		
-
 	}
 }
