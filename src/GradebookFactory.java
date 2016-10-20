@@ -127,7 +127,7 @@ public class GradebookFactory {
 			output.print(ID + ",");
 			for(Semester semester : semesters) {
 				for(Course course : semester.getCourses()) {
-					if(course.getCourseData().keySet().) {		// check each and every course for the student object we're looking for
+					if(course.getCourseData().containsKey(currentStudent)) {		// check each and every course for the student object we're looking for
 						for(Assignment assignment : course.getCourseData().get(currentStudent).getAssignments()) {
 							output.print(course.getCourseID() + "-" + semester.getSeason() + "-" + semester.getYear() + "-" + assignment.getTitle() + ",");
 						}
