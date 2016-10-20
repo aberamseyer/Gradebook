@@ -245,7 +245,8 @@ public class GradebookFactory {
 			input = new Scanner(new File(courseId + "-" + season.toLowerCase() + "-" + year + ".csv"));
 		}
 		catch(FileNotFoundException e) {
-			System.out.println("No data found for " + courseName + " " + season + " " + year + ".");
+			System.out.println("No data found for " + courseName + " " + season.charAt(0) + season.toLowerCase().substring(1)
+					+ " " + year + ".");
 			return;
 		}
 
