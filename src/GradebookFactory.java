@@ -56,9 +56,6 @@ public class GradebookFactory {
 				}
 			}
 		}
-		if(Arrays.equals(grades, new int[]{0, 0, 0, 0, 0})) {
-			System.err.println("Course ID was not found in the database.");
-		}
 		return grades;
 	}
 
@@ -79,7 +76,7 @@ public class GradebookFactory {
 			}
 		}
 		if(Arrays.equals(grades, new int[]{0, 0, 0, 0, 0})) {
-			System.err.println("Semester was not found in the database.");
+			System.out.println("Semester was not found in the database.");
 		}
 		return grades;
 	}
