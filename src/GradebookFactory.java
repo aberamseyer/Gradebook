@@ -131,7 +131,7 @@ public class GradebookFactory {
 						for(Assignment assignment : course.getCourseData().get(currentStudent).getAssignments()) {
 							output.print(course.getCourseID() + "-" + semester.getSeason() + "-" + semester.getYear() + "-" + assignment.getTitle() + ",");
 						}
-						output.print(course.getCourseID() + "-" + semester.getSeason() + "-" + semester.getYear() + "-" + course.getCourseData().get(currentStudent).getLetterGrade());
+						output.print(course.getCourseID() + "-" + semester.getSeason() + "-" + semester.getYear() + "-" + course.getCourseData().get(currentStudent).getLetterGrade() + ",");
 					}
 				}
 			}
