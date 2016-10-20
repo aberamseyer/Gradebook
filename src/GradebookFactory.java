@@ -413,17 +413,21 @@ public class GradebookFactory {
 				break;
 			}
 		}
-		//Add student data to course
-		courseData.put(student, performance);
-
-		//If student is not in repository add to list
+		//Check if student already exists, and get the existing one if so
 		for(Student curr : students) {
 			if(curr.getID().equals(student.getID())) {
 				existingStudent = true;
+				student = curr;
 			}
 		}
+		//If student is not in repository add to list
 		if(existingStudent == false) {
 			students.add(student);
 		}
+		//Add student to course
+		courseData.put(student, performance);
+
+		
+
 	}
 }
