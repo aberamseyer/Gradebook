@@ -242,7 +242,8 @@ public class GradebookFactory {
 			input = new Scanner(new File(courseId + "-" + season.toLowerCase() + "-" + year + ".csv"));
 		}
 		catch(FileNotFoundException e) {
-			System.out.println("No data found for " + courseName + " " + season + " " + year + ".");
+			System.out.println("No data found for " + courseName + " " + season.charAt(0) + season.toLowerCase().substring(1)
+					+ " " + year + ".");
 			return;
 		}
 
@@ -276,7 +277,8 @@ public class GradebookFactory {
 		else {
 			totalNumStudents += numStudents;
 		}
-		System.out.println("Added " + courseName + " of the " + season + " " + year + " semester to the repository.\n" +
+		System.out.println("Added " + courseName + " of the " + season.charAt(0) + season.toLowerCase().substring(1) +
+				" " + year + " semester to the repository.\n" +
 				numStudents + " students were enrolled, of which, " + (totalNumStudents - students.size()) +
 				" were already in the repository.\n");
 	}
