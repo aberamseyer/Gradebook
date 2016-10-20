@@ -112,7 +112,7 @@ public class GradeBookDriver {
 				int[] grades;
 				if (!courseName.equals("none") && !year.equals("none")
 						&& !season.equals("none")) {// int[] array of grade composition is needed
-					grades = generateGradeBook.findGrades(courseName, season.charAt(0), year);	// will work when merged with abe's code
+					grades = generateGradeBook.findGrade(courseName, season.charAt(0), year);	// will work when merged with abe's code
 					System.out.println("For " + courseName + " given in "
 							+ season + " of " + year
 							+ " the grades were composed as follows:\n" + grades[0] + " A's, " + grades[1]
@@ -123,7 +123,7 @@ public class GradeBookDriver {
 				// during that semester/year.
 				else if (courseName.equals("none") && !year.equals("none")
 						&& !season.equals("none")) {// int[] array of grade composition is needed
-					grades = generateGradeBook.findGrades(season.charAt(0), year);	// will work when merged with abe's code
+					grades = generateGradeBook.findGrade(season.charAt(0), year);	// will work when merged with abe's code
 					System.out.println("Across all courses taken in " + season
 							+ " of " + year
 							+ " the grades were composed as follows:\n" + grades[0] + " A's, "
@@ -135,7 +135,7 @@ public class GradeBookDriver {
 
 				else if (!courseName.equals("none") && year.equals("none")
 						&& season.equals("none")) {// int[] array of grade composition is needed 
-					grades = generateGradeBook.findGrades(courseName);	// will work when merged with abe's code
+					grades = generateGradeBook.findGrade(courseName);	// will work when merged with abe's code
 					System.out.println("Across all Semesters the grades for "
 							+ courseName + " were composed as follows:\n" + grades[0] + " A's, "
 							+ grades[1] + " B's, " + grades[2] + " C's, " + grades[3] + " D's, " + grades[4] + " F's.");

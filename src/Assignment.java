@@ -18,17 +18,17 @@ public class Assignment
 		this.comment = null;
 		this.title = null;
 	}
-	public Assignment(int grade) {
+	public Assignment(String title) {
 		this();
+		this.title = title;
+	}
+	public Assignment(String title, int grade) {
+		this(title);
 		this.grade = grade;
 	}
-	public Assignment(int grade, String comment) {
-		this(grade);
+	public Assignment(String title, int grade, String comment) {
+		this(title, grade);
 		this.comment = comment;
-	}
-	public Assignment(int grade, String comment, String title) {
-		this(grade, comment);
-		this.title = title;
 	}
 	
 	/**

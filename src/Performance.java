@@ -15,7 +15,7 @@ public class Performance {
 	public Performance() {
 		assignments = new ArrayList<Assignment>();	// a ArrayList has a default capacity of 16
 		grade = 0;
-		letterGrade = 0;
+		letterGrade = 'F';
 	}
 	
 	public Performance(double grade) {
